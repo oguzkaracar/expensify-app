@@ -2,7 +2,7 @@ import moment from "moment";
 
 // Get visible expenses - Store datalarını filtrelemek için ve kullanıcıya belirlediğimiz verileri göndermek için bu fonksiyonu kullanıdk..
 
-const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
+export default (expenses, { text, sortBy, startDate, endDate }) => {
 	return expenses
 		.filter((expense) => {
 			const createdAtMoment = moment(expense.createdAt);
@@ -22,4 +22,3 @@ const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
 	// filtreleme ve sort işlemleri yaptıktan sonra storedan sadece expenses objesini göndermiş olduk.. Kullanııcı bu verileri görecek...
 };
 
-export default getVisibleExpenses;

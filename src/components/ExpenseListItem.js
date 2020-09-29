@@ -1,10 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import { connect } from "react-redux";
-// import { removeExpense } from "../actions/expenses";
-
-// zaten bir üst componentten props aldığımız için connect metodu için statetoProps fonksiyonu oluşturmamıza gerek yokk..
-// {id, description, amount, createdAt }
+import moment from 'moment';
+import numeral from 'numeral';
 
 // propstan gelen objeyi destructuring yaparak valueları aldık...
 export const ExpenseListItem = ({ id, description, amount, createdAt }) => (
@@ -13,7 +10,7 @@ export const ExpenseListItem = ({ id, description, amount, createdAt }) => (
 			<h3>{description}</h3>
 		</Link>
 		<p>
-			Expense= amount: {amount} - createdAt: {createdAt}
+		amount: {numeral(amount / 100).format('$0,0.00')} - createdAt: {moment(createdAt).format('D MMMM YYYY')}
 		</p>
 	</div>
 );
