@@ -6,7 +6,7 @@ module.exports = (env) => {
 	return {
 		entry: "./src/app.js",
 		output: {
-			path: path.join(__dirname + "/public/"),
+			path: path.join(__dirname, "public", "dist"),
 			filename: "bundle.js",
 		},
 		plugins: [
@@ -46,6 +46,7 @@ module.exports = (env) => {
 			contentBase: path.join(__dirname, "public"),
 			port: 3000,
 			historyApiFallback: true, // burada route işlemleri yaparken, index.html e yönlendirme yaparak bir nevi client-side routing yapmış oldukk..
+			publicPath:'/dist/'
 		},
 	};
 };
