@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start":"node server/server.js",
+    "heroku-postbuild":"npm run build:prod",
     "serve": "live-server public/",
-    "build-dev": "webpack --mode development",
-    "build-prod": "webpack -p --env production",
+    "build:dev": "webpack --mode development",
+    "build:prod": "webpack -p --env production",
     "dev-server": "webpack-dev-server",
     "test": "jest --config=jest.config.json"
   },
@@ -15,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "enzyme-to-json": "^3.6.0",
+    "express": "^4.17.1",
     "moment": "^2.29.0",
     "normalize.css": "^8.0.1",
     "react": "^16.13.1",
