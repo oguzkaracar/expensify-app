@@ -1,35 +1,71 @@
-import { addExpense, editExpense, removeExpense } from "../../actions/expenses";
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+import { addExpense, editExpense, removeExpense, startAddExpense } from "../../actions/expenses";
+import expenses from "../fixtures/expenses";
+import database from "../../firebase/firebase";
+
+const createMockStore = configureMockStore([thunk]);
 
 test("should setup add a expense object with provided value", () => {
-	const expenseData = {
-		description: "Rent",
-		amount: 85000,
-		createdAt: 2000,
-		note: "This was last month rent.",
-	};
-	const action = addExpense(expenseData);
+	const action = addExpense(expenses[1]);
 	expect(action).toEqual({
 		type: "ADD_EXPENSE",
-		expense: {
-			...expenseData,
-			id: expect.any(String),
-		},
+		expense: expenses[1],
 	});
 });
 
-test("should setup add a expense object with default value", () => {
-	const action = addExpense();
+test("should add expense to database and store", (done) => {
+	const store = createMockStore({});
+	const expenseData = {
+		description: "mouse",
+		amount: 30000,
+		note: "This is mouse price",
+		createdAt: 100000,
+	};
+	store
+		.dispatch(startAddExpense(expenseData))
+		.then(() => {
+			const actions = store.getActions();
+			expect(actions[0]).toEqual({
+				type: "ADD_EXPENSE",
+				expense: {
+					id: expect.any(String),
+					...expenseData,
+				},
+			});
+			return database.ref(`expenses/${actions[0].expense.id}`).once("value");
+		})
+		.then((snapshot) => {
+			expect(snapshot.val()).toEqual(expenseData);
+			done();
+		});
+});
 
-	expect(action).toEqual({
-		type: "ADD_EXPENSE",
-		expense: {
-			id:expect.any(String),
-			description: "",
-			amount: 0,
-			createdAt: 0,
-			note: "",
-		},
-	});
+test("should add expense with defaults database and store", (done) => {
+	const store = createMockStore({});
+	const expenseDefaults = {
+		description: "",
+		amount: 0,
+		note: "",
+		createdAt: 0,
+	};
+	store
+		.dispatch(startAddExpense({}))
+		.then(() => {
+			const actions = store.getActions();
+			expect(actions[0]).toEqual({
+				type: "ADD_EXPENSE",
+				expense: {
+					id: expect.any(String),
+					...expenseDefaults,
+				},
+			});
+			return database.ref(`expenses/${actions[0].expense.id}`).once("value");
+		})
+		.then((snapshot) => {
+			expect(snapshot.val()).toEqual(expenseDefaults);
+			done();
+		});
 });
 
 test("Should setup remove expense action object", () => {
