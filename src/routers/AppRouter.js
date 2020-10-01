@@ -1,22 +1,25 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import { Router, Route, Switch} from "react-router-dom";
+import  createHistory from 'history/createBrowserHistory';
 import HomePage from "../components/HomePage";
 import AddExpense from "../components/AddExpense";
 import EditExpense from "../components/EditExpense";
-import HelpPage from "../components/HelpPage";
 import NotFoundPage from "../components/NotFoundPage";
-import Header from "../components/Header";
+import LoginPage from '../components/LoginPage';
+import PrivateRoute from './PrivateRoute'
+import PublicRoute from './PrivateRoute'
+
+export const history = createHistory();
 
 const AppRouter = () => (
-	<Router>
+	<Router history={history}>
 		<div>
-			<Header />
 			{/* Switch aranan route u bulduğunda diğerlerine bakmaz. Eğer aranan route bulunamazsa en sondaki 404 routeunu çalıştırır. */}
 			<Switch>
-				<Route path="/" component={HomePage} exact />
-				<Route path="/create" component={AddExpense} />
-				<Route path="/edit/:id" component={EditExpense}/>
-				<Route path="/help" component={HelpPage} />
+				<PublicRoute path="/" component={LoginPage} exact />
+				<PrivateRoute path="/dashboard" component={HomePage} />
+				<PrivateRoute path="/create" component={AddExpense} />
+				<PrivateRoute path="/edit/:id" component={EditExpense}/>
 				<Route component={NotFoundPage} />
 			</Switch>
 		</div>
