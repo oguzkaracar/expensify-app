@@ -1,15 +1,18 @@
-$font-family:Helvetica, Arial, sans-serif;
+$font-family: Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 *{
     box-sizing: border-box;
 }
+
 html{
     font-size: 62.5%;
-    
+   
 }
 
 body {
     font-family: $font-family;
     font-size: $m-size;
+    color: $dark-grey;
+    line-height: 1.6;
 }
 
 button{

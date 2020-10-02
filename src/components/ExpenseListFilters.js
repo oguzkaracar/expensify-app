@@ -5,7 +5,6 @@ import { setTextFilter, sortByAmount, sortByDate, setStartDate, setEndDate } fro
 import { DateRangePicker } from "react-dates";
 import "react-dates/initialize";
 
-
 class ExpenseListFilters extends React.Component {
 	state = {
 		calendarFocused: null,
@@ -25,45 +24,56 @@ class ExpenseListFilters extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<input
-					type="text"
-					value={this.props.filters.text}
-					onChange={(e) => {
-						this.props.dispatch(setTextFilter(e.target.value));
-						// inputtan aldığımız değeri dispatch ile daha önce oluşturduğumuz action a aktardık ve filtreleme işlemi yapmış olduk..
-					}}></input>
-				<select
-					value={this.props.filters.sortBy}
-					onChange={(e) => {
-						const value = e.target.value;
-						if (value === "date") {
-							// date default filtreleme ama start ve end date tanımlaması yapmadık..
-							this.props.dispatch(sortByDate());
-						} else if (value === "amount") {
-							// tarihe göre filtrelemeyi sıfırladık.
-							this.props.dispatch(setStartDate());
-							this.props.dispatch(setEndDate());
-							// amount a göre seçme action'ı çalışacak..
-							this.props.dispatch(sortByAmount());
-						}
-					}}>
-					<option value="date">Date</option>
-					<option value="amount">Amount</option>
-				</select>
-				<DateRangePicker
-					startDate={this.props.filters.startDate}
-					startDateId={uuid()}
-					endDate={this.props.filters.endDate}
-					endDateId={uuid()}
-					onDatesChange={this.onDatesChange}
-					focusedInput={this.state.calendarFocused}
-					onFocusChange={this.onFocusChange}
-					numberOfMonths={1}
-					isOutsideRange={() => false}
-					showClearDates={true}
-					showDefaultInputIcon={true}
-				/>
+			<div className="content-container">
+				<div className="input-group">
+					<div className="input-group__item">
+						<input
+							className="text-input"
+							type="text"
+							placeholder="Search Expenses"
+							value={this.props.filters.text}
+							onChange={(e) => {
+								this.props.dispatch(setTextFilter(e.target.value));
+								// inputtan aldığımız değeri dispatch ile daha önce oluşturduğumuz action a aktardık ve filtreleme işlemi yapmış olduk..
+							}}></input>
+					</div>
+					<div className="input-group__item">
+						<select
+							className="select"
+							value={this.props.filters.sortBy}
+							onChange={(e) => {
+								const value = e.target.value;
+								if (value === "date") {
+									// date default filtreleme ama start ve end date tanımlaması yapmadık..
+									this.props.dispatch(sortByDate());
+								} else if (value === "amount") {
+									// tarihe göre filtrelemeyi sıfırladık.
+									this.props.dispatch(setStartDate());
+									this.props.dispatch(setEndDate());
+									// amount a göre seçme action'ı çalışacak..
+									this.props.dispatch(sortByAmount());
+								}
+							}}>
+							<option value="date">Date</option>
+							<option value="amount">Amount</option>
+						</select>
+					</div>
+					<div className="input-group__item">
+						<DateRangePicker
+							startDate={this.props.filters.startDate}
+							startDateId={uuid()}
+							endDate={this.props.filters.endDate}
+							endDateId={uuid()}
+							onDatesChange={this.onDatesChange}
+							focusedInput={this.state.calendarFocused}
+							onFocusChange={this.onFocusChange}
+							numberOfMonths={1}
+							isOutsideRange={() => false}
+							showClearDates={true}
+							showDefaultInputIcon={true}
+						/>
+					</div>
+				</div>
 			</div>
 		);
 	}
